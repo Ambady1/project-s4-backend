@@ -1,8 +1,8 @@
-import db from '../models/Database.js';
-
+import { studRegSer } from "../services/studRegSer.js";
+import bcrypt from 'bcrypt'
 const saltRounds = 10;
 
-export const studReg = (req,res)=>{
+export const studReg = (req, res) => {
     const name = req.body.name
     const email = req.body.email
     const sid = req.body.sid
@@ -14,15 +14,11 @@ export const studReg = (req,res)=>{
         if (err) {
             console.log(err)
         }
+        studRegSer(name, email, sid, hash, dob, phone).then((result) => {
+            res.json("Values Inserted")
+        }).catch((err) => {
+            console.log(err)
+        })
 
-        db.query('INSERT INTO students(name,email,studentid,password,dob,phone)VALUES(?,?,?,?,?,?)',
-            [name, email, sid, hash, dob, phone],
-            (err, result) => {
-                if (err) {
-                    console.log(err)
-                } else {
-                    res.json("Values Inserted")
-                }
-            })
     })
 }
