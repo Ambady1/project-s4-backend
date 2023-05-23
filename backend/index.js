@@ -34,6 +34,8 @@ import adminLoginRoute from './routes/AdminLogin.js'
 import adminLogoutRoute from './routes/AdminLogout.js'
 import menuFetch from './routes/Menufetch.js'
 import feedbackCollect from './routes/FeedbackCollect.js'
+import admstudentlist from './routes/AdmStudentlist.js'
+import admEditMenu from './routes/AdmEditMenu.js'
 app.use('/login',studentLoginRoute)
 app.use('/add',studentRegisterRoute) 
 app.use('/logout',studentLogoutRoute)
@@ -41,8 +43,8 @@ app.use('/adminlogin',adminLoginRoute)
 app.use('/adminlogout',adminLogoutRoute)
 app.use('/menu',menuFetch)
 app.use('/feedback',feedbackCollect)
-
-
+app.use('/admstudentlist',admstudentlist)
+app.use('/admeditmenu',admEditMenu)
 
 //Checking if connection is live or not
 app.listen(8800, () => {
