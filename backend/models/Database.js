@@ -4,7 +4,9 @@ const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: 'mymess'
+    database: 'mymess',
+    multipleStatements: true, // Enable multi-statements
+
 });
 
 export default db;
