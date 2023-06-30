@@ -1,18 +1,80 @@
-import db from '../models/Database.js'
+import db from '../models/Database.js';
 
- async function calculateAndUpdate(){
-        let studentid = {};
-        const q1 = "SELECT studentid FROM students";
-        db.query(q1,(error,results)=>{
-            if(error){
-                throw error
-            }else{
-                results.forEach(row => {
-                     studentid = row;
-                });
-                console.log(results)
+async function calculateAndUpdate() {
+    // Get today's date
+    const today = new Date();
+
+    // Get the first day of the current month
+    const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+    // Get yesterday's date
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    // Calculate the number of days up to yesterday in the current month
+    const daysUpToYesterday = yesterday.getDate();
+
+    // Todays date converted to correct form to store in DB
+    const dateStr = today.toISOString().slice(0, 10);
+
+    const update = (noMessCuts, messCuts) => {
+        messCuts.forEach((messCut) => {
+            const q2 = "SELECT messcut FROM messcut WHERE studentid = ?";
+            db.query(q2, [messCut], (error, result) => {
+                if (error) {
+                    throw error;
+                } else {
+                    var messCutSum = 0;
+                    for (var i = 0; i < result.length; i++) {
+                        messCutSum += result[i].messcut;
+                    }
+                    var excess = messCutSum * 81 * 3;
+                    var currentBill1 = 81 * daysUpToYesterday - excess;
+                    const q3 = "UPDATE bill SET billdate = ?, billamt = ?  WHERE studentid = ?";
+                    db.query(q3, [dateStr, currentBill1, messCut], (error, result) => {
+                        if (error) {
+                            throw error;
+                        } else {
+                            console.log("Values inserted successfully!");
+                        }
+                    });
+                }
+            });
+        });
+
+        const currentBill2 = 81 * daysUpToYesterday;
+        noMessCuts.forEach((noMessCut) => {
+            const q4 = "UPDATE bill SET billdate = ?, billamt = ?  WHERE studentid = ?";
+            db.query(q4, [dateStr, currentBill2, noMessCut], (error, result) => {
+                if (error) {
+                    throw error;
+                } else {
+                    console.log("Values inserted successfully!");
+                }
+            });
+        });
+    };
+
+    const getStudentId = (cutStudents) => {
+        const q = "SELECT students.studentid FROM students LEFT JOIN messcut ON students.studentid = messcut.studentid WHERE messcut.studentid IS NULL;";
+        db.query(q, (error, results) => {
+            if (error) {
+                throw error;
+            } else {
+                update(results.map((res1) => res1.studentid), cutStudents.map((res2) => res2.studentid));
             }
-        })
-    }
-       
-  export default calculateAndUpdate
+        });
+    };
+
+    // Selecting students who have mess cut
+    const q1 = "SELECT DISTINCT students.studentid FROM students INNER JOIN messcut ON students.studentid = messcut.studentid WHERE DATEDIFF(CURDATE(), messcut.cut_startdate) >= 3";
+    db.query(q1, (error, results) => {
+        if (error) {
+            throw error;
+        } else {
+            getStudentId(results);
+        }
+    });
+}
+
+export default calculateAndUpdate;
