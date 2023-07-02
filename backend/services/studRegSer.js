@@ -11,6 +11,14 @@ export const studRegSer = (name, email, sid, hash, dob, phone) => {
                     resolve(result)
                 }
             })
+            db.query('INSERT INTO bill(studentid) VALUES(?)',
+            [sid],(err,result)=>{
+                if(err){
+                    reject(err)
+                }else{
+                    resolve(result)
+                }
+            })
     })
 }
 

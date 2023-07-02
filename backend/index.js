@@ -1,5 +1,6 @@
 //Importing required libraries
 import express from 'express';
+import axios from 'axios';
 const app = express();
 
 import session from 'express-session';
@@ -51,4 +52,13 @@ app.use('/messbill',messBill)
 //Checking if connection is live or not
 app.listen(8800, () => {
     console.log("Listening on port 8800");
+
+    //Update request for messbill
+    axios.get('http://localhost:8800/messbill')
+    .then(() => {
+      console.log('Axios request successful');
+    })
+    .catch(error => {
+      console.error('Axios request failed:', error);
+    });
 })

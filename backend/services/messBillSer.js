@@ -75,6 +75,7 @@ async function calculateAndUpdate() {
         };
     
         const getStudentId = (cutStudents) => {
+            //Selecting students who have no messcut
             const q = "SELECT students.studentid FROM students LEFT JOIN messcut ON students.studentid = messcut.studentid WHERE messcut.studentid IS NULL;";
             db.query(q, (error, results) => {
                 if (error) {
