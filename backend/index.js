@@ -40,6 +40,7 @@ import admEditMenu from './routes/AdmEditMenu.js'
 import messBill from './routes/MessBill.js'
 import messCut from './routes/Messcut.js'
 import livemessBill from './routes/LiveMessBill.js'
+import newsView from './routes/NewsView.js'
 app.use('/login',studentLoginRoute)
 app.use('/add',studentRegisterRoute) 
 app.use('/logout',studentLogoutRoute)
@@ -52,6 +53,7 @@ app.use('/admeditmenu',admEditMenu)
 app.use('/messbill',messBill)
 app.use('/messcut',messCut)
 app.use('/livemessbill',livemessBill)
+app.use('/news',newsView)
 //Checking if connection is live or not
 app.listen(8800, () => {
     console.log("Listening on port 8800");
