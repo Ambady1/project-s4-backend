@@ -38,16 +38,16 @@ async function calculateAndUpdate() {
     }else{
         const update = (noMessCuts, messCuts) => {
             messCuts.forEach((messCut) => {
-                const q2 = "SELECT messcut FROM messcut WHERE studentid = ?";
+                const q2 = "SELECT num_of_days FROM messcut WHERE studentid = ?";
                 db.query(q2, [messCut], (error, result) => {
                     if (error) {
                         throw error;
                     } else {
                         var messCutSum = 0;
                         for (var i = 0; i < result.length; i++) {
-                            messCutSum += result[i].messcut;
+                            messCutSum += result[i].num_of_days;
                         }
-                        var excess = messCutSum * 81 * 3;
+                        var excess = messCutSum * 81;
                         var currentBill1 = 81 * daysUpToYesterday - excess;
                         const q3 = "UPDATE bill SET billdate = ?, billamt = ?  WHERE studentid = ?";
                         db.query(q3, [dateStr, currentBill1, messCut], (error, result) => {

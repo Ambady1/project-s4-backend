@@ -4,7 +4,8 @@ export const messcutCont = (req, res) => {
     const sid = req.body.sid;
     const start = req.body.start;
     const end = req.body.end;
-    messcutSer(sid, 1, start, end)
+    const nod = req.body.nod;
+    messcutSer(sid, 1, start, end,nod)
         .then((result) => {
             if (result) {
                 res.json(result)
