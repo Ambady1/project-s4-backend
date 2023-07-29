@@ -41,6 +41,9 @@ import messBill from './routes/MessBill.js'
 import messCut from './routes/Messcut.js'
 import livemessBill from './routes/LiveMessBill.js'
 import newsView from './routes/NewsView.js'
+import studentProfile from './routes/StudentProfile.js'
+import feeDefaulters from './routes/FeeDefaulters.js'
+import noticeUpdate from './routes/NoticeUpdate.js'
 app.use('/login',studentLoginRoute)
 app.use('/add',studentRegisterRoute) 
 app.use('/logout',studentLogoutRoute)
@@ -54,6 +57,9 @@ app.use('/messbill',messBill)
 app.use('/messcut',messCut)
 app.use('/livemessbill',livemessBill)
 app.use('/news',newsView)
+app.use('/studentprofile',studentProfile)
+app.use('/feedefaulters',feeDefaulters)
+app.use('/noticeupdate',noticeUpdate)
 //Checking if connection is live or not
 app.listen(8800, () => {
     console.log("Listening on port 8800");
